@@ -127,6 +127,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        // when a button or switch is pressed, vibrate the phone
+        vibrator.vibrate(50);
+
         // direct the clicked button to its corresponding method
         if (v.getId() == R.id.startBtn || v.getId() == R.id.quitBtn) {
             if (v.getId() == R.id.quitBtn) timer.cancel(); // cancel timer since player quit the game
@@ -138,8 +141,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             refresh("");
         }
         else if (v.getId() == R.id.enterBtn) {
-            // user enters invalid input // add buttons that will vibrate instead of keyboard
-            if (thirdAnswer.getText().toString().equals("") || thirdAnswer.getText().toString().equals("-") || thirdAnswer.getText().toString().length() > 5) {
+            // user enters invalid input
+            if (thirdAnswer.getText().toString().equals("") || thirdAnswer.getText().toString().length() > 5) {
                 thirdAnswer.setText("");
                 Toast.makeText(this, "Invalid input. Try again.", Toast.LENGTH_SHORT).show();
             }
@@ -161,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else { // user pressed a number button
             String ans_builder;
-            if (v.getId() != R.id.backspace) vibrator.vibrate(50);
             if (v.getId() == R.id.one_btn) ans_builder = thirdAnswer.getText().toString() + "1";
             else if (v.getId() == R.id.two_btn) ans_builder = thirdAnswer.getText().toString() + "2";
             else if (v.getId() == R.id.three_btn) ans_builder = thirdAnswer.getText().toString() + "3";
@@ -285,128 +287,130 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
             change();
         }
-        // display the questions according to the problem the user is on
-        switch (num) {
-            case 0: // user is on first problem
-                firstQuestion.setVisibility(View.INVISIBLE);
-                firstAnswer.setVisibility(View.INVISIBLE);
-                secondQuestion.setVisibility(View.INVISIBLE);
-                secondAnswer.setVisibility(View.INVISIBLE);
-                fourthQuestion.setVisibility(View.VISIBLE);
-                fourthAnswer.setVisibility(View.VISIBLE);
-                fifthQuestion.setVisibility(View.VISIBLE);
-                fifthAnswer.setVisibility(View.VISIBLE);
-                btnBack.setEnabled(false);
-                thirdQuestion.setText(test[0].strProblem);
-                fourthQuestion.setText(test[1].strProblem);
-                fifthQuestion.setText(test[2].strProblem);
-                break;
-            case 1: // user is on second problem
-                firstQuestion.setVisibility(View.INVISIBLE);
-                firstAnswer.setVisibility(View.INVISIBLE);
-                secondQuestion.setVisibility(View.VISIBLE);
-                secondAnswer.setVisibility(View.VISIBLE);
-                btnBack.setEnabled(true);
-                snd = "" + test[0].attempt;
-                secondQuestion.setText(test[0].strProblem);
-                secondAnswer.setText(snd);
-                thirdQuestion.setText(test[1].strProblem);
-                fourthQuestion.setText(test[2].strProblem);
-                fifthQuestion.setText(test[3].strProblem);
-                break;
-            case 98: // user is on the penultimate problem
-                fourthQuestion.setVisibility(View.VISIBLE);
-                fourthAnswer.setVisibility(View.VISIBLE);
-                fifthQuestion.setVisibility(View.INVISIBLE);
-                fifthAnswer.setVisibility(View.INVISIBLE);
-                fst = "" + test[96].attempt;
-                snd = "" + test[97].attempt;
-                firstQuestion.setText(test[96].strProblem);
-                firstAnswer.setText(fst);
-                secondQuestion.setText(test[97].strProblem);
-                secondAnswer.setText(snd);
-                thirdQuestion.setText(test[98].strProblem);
-                fourthQuestion.setText(test[99].strProblem);
-                break;
-            case 99: // user is on the last problem
-                fourthQuestion.setVisibility(View.INVISIBLE);
-                fourthAnswer.setVisibility(View.INVISIBLE);
-                fifthQuestion.setVisibility(View.INVISIBLE);
-                fifthAnswer.setVisibility(View.INVISIBLE);
-                fst = "" + test[97].attempt;
-                snd = "" + test[98].attempt;
-                firstQuestion.setText(test[97].strProblem);
-                firstAnswer.setText(fst);
-                secondQuestion.setText(test[98].strProblem);
-                secondAnswer.setText(snd);
-                thirdQuestion.setText(test[99].strProblem);
-                break;
-            case 100: // user finished all 100 problems
-                // get user's time and score
-                double seconds = (System.nanoTime() - startTime) / 1000000000.0;
-                int score = 0;
-                for (int i = 0; i < 100; i++) if (test[i].attempt == test[i].answer) score++;
+        else {
+            // display the questions according to the problem the user is on
+            switch (num) {
+                case 0: // user is on first problem
+                    firstQuestion.setVisibility(View.INVISIBLE);
+                    firstAnswer.setVisibility(View.INVISIBLE);
+                    secondQuestion.setVisibility(View.INVISIBLE);
+                    secondAnswer.setVisibility(View.INVISIBLE);
+                    fourthQuestion.setVisibility(View.VISIBLE);
+                    fourthAnswer.setVisibility(View.VISIBLE);
+                    fifthQuestion.setVisibility(View.VISIBLE);
+                    fifthAnswer.setVisibility(View.VISIBLE);
+                    btnBack.setEnabled(false);
+                    thirdQuestion.setText(test[0].strProblem);
+                    fourthQuestion.setText(test[1].strProblem);
+                    fifthQuestion.setText(test[2].strProblem);
+                    break;
+                case 1: // user is on second problem
+                    firstQuestion.setVisibility(View.INVISIBLE);
+                    firstAnswer.setVisibility(View.INVISIBLE);
+                    secondQuestion.setVisibility(View.VISIBLE);
+                    secondAnswer.setVisibility(View.VISIBLE);
+                    btnBack.setEnabled(true);
+                    snd = "" + test[0].attempt;
+                    secondQuestion.setText(test[0].strProblem);
+                    secondAnswer.setText(snd);
+                    thirdQuestion.setText(test[1].strProblem);
+                    fourthQuestion.setText(test[2].strProblem);
+                    fifthQuestion.setText(test[3].strProblem);
+                    break;
+                case 98: // user is on the penultimate problem
+                    fourthQuestion.setVisibility(View.VISIBLE);
+                    fourthAnswer.setVisibility(View.VISIBLE);
+                    fifthQuestion.setVisibility(View.INVISIBLE);
+                    fifthAnswer.setVisibility(View.INVISIBLE);
+                    fst = "" + test[96].attempt;
+                    snd = "" + test[97].attempt;
+                    firstQuestion.setText(test[96].strProblem);
+                    firstAnswer.setText(fst);
+                    secondQuestion.setText(test[97].strProblem);
+                    secondAnswer.setText(snd);
+                    thirdQuestion.setText(test[98].strProblem);
+                    fourthQuestion.setText(test[99].strProblem);
+                    break;
+                case 99: // user is on the last problem
+                    fourthQuestion.setVisibility(View.INVISIBLE);
+                    fourthAnswer.setVisibility(View.INVISIBLE);
+                    fifthQuestion.setVisibility(View.INVISIBLE);
+                    fifthAnswer.setVisibility(View.INVISIBLE);
+                    fst = "" + test[97].attempt;
+                    snd = "" + test[98].attempt;
+                    firstQuestion.setText(test[97].strProblem);
+                    firstAnswer.setText(fst);
+                    secondQuestion.setText(test[98].strProblem);
+                    secondAnswer.setText(snd);
+                    thirdQuestion.setText(test[99].strProblem);
+                    break;
+                case 100: // user finished all 100 problems
+                    // get user's time and score
+                    double seconds = (System.nanoTime() - startTime) / 1000000000.0;
+                    int score = 0;
+                    for (int i = 0; i < 100; i++) if (test[i].attempt == test[i].answer) score++;
 
-                // cancel the timer since the player finished the game
-                timer.cancel();
+                    // cancel the timer since the player finished the game
+                    timer.cancel();
 
-                // if user finished impossible mode, congratulate the user and update the impossible mode leaderboard
-                if (saveImpossible) {
-                    completeImpossible = true;
-                    if (timeImp.equals("empty") || seconds < parseDouble(timeImp)) {
-                        timeImp = "" + String.format(Locale.getDefault(), "%.3f", seconds);
-                        edit.putBoolean("legend", true);
-                        edit.putString("timeImp", timeImp);
-                        edit.apply();
-                    }
-                    Toast.makeText(this, "Congratulations! You beat the game on impossible mode in " + "" + String.format(Locale.getDefault(), "%.3f" ,seconds) + " seconds", Toast.LENGTH_LONG).show();
-                } else {
-                    // if the user finished the fluency drill, notify the user on his or her score and time
-                    Toast.makeText(this, "Score: " + "" + score + "%\tTime: " + "" + String.format(Locale.getDefault(), "%.3f", seconds) + "s", Toast.LENGTH_LONG).show();
-                    if (score == 100) { // update the leaderboard if necessary
-                        if (Objects.equals(first, "empty"))
-                            first = "" + String.format(Locale.getDefault(), "%.3f", seconds);
-                        else if (seconds < parseDouble(first)) {
-                            third = second;
-                            second = first;
-                            first = "" + String.format(Locale.getDefault(), "%.3f", seconds);
-                        } else if (Objects.equals(second, "empty"))
-                            second = "" + String.format(Locale.getDefault(), "%.3f", seconds);
-                        else if (seconds < parseDouble(second) && seconds >= parseDouble(first)) {
-                            third = second;
-                            second = "" + String.format(Locale.getDefault(), "%.3f", seconds);
-                        } else if (Objects.equals(third, "empty") || seconds < parseDouble(third) && seconds >= parseDouble(second)) {
-                            third = "" + String.format(Locale.getDefault(), "%.3f", seconds);
-                        }
-                        edit.putString("firstP", first);
-                        edit.putString("secondP", second);
-                        edit.putString("thirdP", third);
-                        edit.apply();
-                        // if user got a perfect score in less than 60s, grant user access to impossible mode
-                        if (seconds < 60) {
-                            impossibleAccess = true;
-                            edit.putBoolean("<60", true);
+                    // if user finished impossible mode, congratulate the user and update the impossible mode leaderboard
+                    if (saveImpossible) {
+                        completeImpossible = true;
+                        if (timeImp.equals("empty") || seconds < parseDouble(timeImp)) {
+                            timeImp = "" + String.format(Locale.getDefault(), "%.3f", seconds);
+                            edit.putBoolean("legend", true);
+                            edit.putString("timeImp", timeImp);
                             edit.apply();
                         }
+                        Toast.makeText(this, "Congratulations! You beat the game on impossible mode in " + "" + String.format(Locale.getDefault(), "%.3f", seconds) + " seconds", Toast.LENGTH_LONG).show();
+                    } else {
+                        // if the user finished the fluency drill, notify the user on his or her score and time
+                        Toast.makeText(this, "Score: " + "" + score + "%\tTime: " + "" + String.format(Locale.getDefault(), "%.3f", seconds) + "s", Toast.LENGTH_LONG).show();
+                        if (score == 100) { // update the leaderboard if necessary
+                            if (Objects.equals(first, "empty"))
+                                first = "" + String.format(Locale.getDefault(), "%.3f", seconds);
+                            else if (seconds < parseDouble(first)) {
+                                third = second;
+                                second = first;
+                                first = "" + String.format(Locale.getDefault(), "%.3f", seconds);
+                            } else if (Objects.equals(second, "empty"))
+                                second = "" + String.format(Locale.getDefault(), "%.3f", seconds);
+                            else if (seconds < parseDouble(second) && seconds >= parseDouble(first)) {
+                                third = second;
+                                second = "" + String.format(Locale.getDefault(), "%.3f", seconds);
+                            } else if (Objects.equals(third, "empty") || seconds < parseDouble(third) && seconds >= parseDouble(second)) {
+                                third = "" + String.format(Locale.getDefault(), "%.3f", seconds);
+                            }
+                            edit.putString("firstP", first);
+                            edit.putString("secondP", second);
+                            edit.putString("thirdP", third);
+                            edit.apply();
+                            // if user got a perfect score in less than 60s, grant user access to impossible mode
+                            if (seconds < 60) {
+                                impossibleAccess = true;
+                                edit.putBoolean("<60", true);
+                                edit.apply();
+                            }
+                        }
                     }
-                }
-                change();
-                break;
-            default: // user is on any other problem
-                firstQuestion.setVisibility(View.VISIBLE);
-                firstAnswer.setVisibility(View.VISIBLE);
-                fifthQuestion.setVisibility(View.VISIBLE);
-                fifthAnswer.setVisibility(View.VISIBLE);
-                fst = "" + test[num - 2].attempt;
-                snd = "" + test[num - 1].attempt;
-                firstQuestion.setText(test[num - 2].strProblem);
-                firstAnswer.setText(fst);
-                secondQuestion.setText(test[num - 1].strProblem);
-                secondAnswer.setText(snd);
-                thirdQuestion.setText(test[num].strProblem);
-                fourthQuestion.setText(test[num + 1].strProblem);
-                fifthQuestion.setText(test[num + 2].strProblem);
-                break;
+                    change();
+                    break;
+                default: // user is on any other problem
+                    firstQuestion.setVisibility(View.VISIBLE);
+                    firstAnswer.setVisibility(View.VISIBLE);
+                    fifthQuestion.setVisibility(View.VISIBLE);
+                    fifthAnswer.setVisibility(View.VISIBLE);
+                    fst = "" + test[num - 2].attempt;
+                    snd = "" + test[num - 1].attempt;
+                    firstQuestion.setText(test[num - 2].strProblem);
+                    firstAnswer.setText(fst);
+                    secondQuestion.setText(test[num - 1].strProblem);
+                    secondAnswer.setText(snd);
+                    thirdQuestion.setText(test[num].strProblem);
+                    fourthQuestion.setText(test[num + 1].strProblem);
+                    fifthQuestion.setText(test[num + 2].strProblem);
+                    break;
+            }
         }
     }
 }
