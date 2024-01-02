@@ -125,6 +125,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         (fifthAnswer = findViewById(R.id.fifthA)).setEnabled(false);
     }
 
+    public void onPause() {
+        super.onPause();
+        timer.cancel();
+        if (!start) change();
+    }
+
     @Override
     public void onClick(View v) {
         // when a button or switch is pressed, vibrate the phone
@@ -265,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // if impossible mode is activated, set timer to 60s
             if (saveImpossible) timer.schedule(task, 60000);
-            // if impossible mode is not activated, set timer to 600s
+                // if impossible mode is not activated, set timer to 600s
             else timer.schedule(task, 600000);
 
             // show the first problem
