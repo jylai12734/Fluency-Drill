@@ -127,8 +127,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onPause() {
         super.onPause();
-        timer.cancel();
-        if (!start) change();
+        if (!start) {
+            timer.cancel();
+            change();
+        }
     }
 
     @Override
