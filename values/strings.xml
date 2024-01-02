@@ -9,8 +9,8 @@
     <string name="impossibleModeSwitchText">Impossible Mode?</string>
     <string name="impossibleModeRecord">Fastest time in impossible mode: </string>
     <string name="enterBtnText">\u2713</string>
-    <string name="backBtnText">\u2190</string>
-    <string name="quitBtnText">\u21A9</string>
+    <string name="backBtnText">\u21A9</string>
+    <string name="quitBtnText">X</string>
     <string name="backspace">\u232B</string>
     <string name="one_btn">1</string>
     <string name="two_btn">2</string>
